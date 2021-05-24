@@ -29,6 +29,9 @@ public class Member {
 
     private String Role;
 
+    private String provider;
+    private String providerid;
+
     @OneToMany(mappedBy = "member")
     List<Post> postList = new ArrayList<>();
 

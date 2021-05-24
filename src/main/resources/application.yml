@@ -11,6 +11,16 @@ spring:
       hibernate:
         # show_sql: true
         format_sql: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 327067487467-1v0hjjajd542ekec5pdr45jpt0fub9g9.apps.googleusercontent.com
+            client-secret: NnwHJn9kBq7DE1NpuJHlayE4
+            scope:
+              - email
+              - profile
 logging.level:
   org.hibernate.SQL: debug
 # org.hibernate.type: trace
