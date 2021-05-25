@@ -4,6 +4,7 @@ package com.example.boardproject.entity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -23,9 +24,15 @@ public class Post extends BaseTimeEntity{
     private String title;
     private String content;
 
-    public Post(Member member, String title, String content) {
-        this.member = member;
+
+    public Post(String title, String content) {
+
         this.title = title;
         this.content = content;
     }
+    public void setMember(Member member){
+        this.member=member;
+        member.getPostList().add(this);
+    }
+
 }

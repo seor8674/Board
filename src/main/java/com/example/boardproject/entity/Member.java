@@ -46,6 +46,16 @@ public class Member {
         else{
             this.Role="ROLE_MEMBER";
         }
+        this.provider="";
+        this.providerid="";
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
+    }
+
+    public void setProviderid(String providerid) {
+        this.providerid = providerid;
     }
 
     public void setPassword(String password) {

@@ -19,6 +19,8 @@ public class MemberService {
         String pwd=member.getPassword();
         String enpwd=bCryptPasswordEncoder.encode(pwd);
         member.setPassword(enpwd);
+        member.setProviderid("local");
+        member.setProvider("local");
         memberRepository.save(member);
         return member.getId();
     }

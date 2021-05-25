@@ -2,7 +2,7 @@ package com.example.boardproject.repository;
 
 import com.example.boardproject.entity.Member;
 import com.example.boardproject.entity.Post;
-import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,15 +23,25 @@ class PostRepositoryTest {
     public void postTest(){
         Member member = new Member("MemberA","as","123","qwd");
         memberRepository.save(member);
-        Post post1 = new Post(member,"A","contentA");
-        Post post2 = new Post(member,"B","contentB");
-        Post post3 = new Post(member,"C","contentC");
+        Post post1 = new Post("A","contentA");
+        Post post2 = new Post("B","contentB");
+        Post post3 = new Post("C","contentC");
+        Post post4 = new Post("C","contentC");
+        Post post5 = new Post("C","contentC");
+        Post post6 = new Post("C","contentC");
+
         postRepository.save(post1);
         postRepository.save(post2);
         postRepository.save(post3);
-        List<Post> all = postRepository.findAll();
-        Assertions.assertThat(all.get(2).getHit()).isEqualTo(0);
-        Assertions.assertThat(all.size()).isEqualTo(3);
-        Assertions.assertThat(all.get(1).getContent()).isEqualTo("contentB");
+        postRepository.save(post4);
+        postRepository.save(post5);
+        postRepository.save(post6);
+
+        //Post firstBy = postRepository.findFirstByOrderById();
+        List<Post> top3By = postRepository.findTop3By();
+        List<Post> top10By = postRepository.findTop10By();
+        org.assertj.core.api.Assertions.assertThat(top3By.get(0).getTitle()).isEqualTo("A");
+        System.out.println(top3By.size());
+        System.out.println(top10By.size());
     }
 }

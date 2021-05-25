@@ -1,16 +1,25 @@
 package com.example.boardproject.config.auth;
 
 import com.example.boardproject.entity.Member;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
-public class PrincpalDetails implements UserDetails {
+@Data
+public class PrincipalDetails implements UserDetails, OAuth2User {
     private Member member;
+    private Map<String,Object> attributes;
 
-    public PrincpalDetails(Member member) {
+    public PrincipalDetails(Member member) {
+        this.member = member;
+    }
+    public PrincipalDetails(Member member,Map<String,Object> attributes) {
+        this.attributes=attributes;
         this.member = member;
     }
 
@@ -54,5 +63,17 @@ public class PrincpalDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        return attributes;
+    }
+
+    @Override
+    public String getName() {
+        return null;
     }
 }

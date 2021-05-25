@@ -2,11 +2,13 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     password: 123456
-    url: jdbc:mysql://localhost:3306/Board?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://localhost:3306/Board?serverTimezone=Asia/Seoul&useSSL=false&characterEncoding=utf8
+
+
     username: root
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         # show_sql: true
@@ -21,6 +23,12 @@ spring:
             scope:
               - email
               - profile
+          facebook:
+            client-id: 208122754329602
+            client-secret: b0928463a9c018e0cf9c04c8dc57eb30
+            scope:
+              - email
+              - public_profile
 logging.level:
   org.hibernate.SQL: debug
 # org.hibernate.type: trace
