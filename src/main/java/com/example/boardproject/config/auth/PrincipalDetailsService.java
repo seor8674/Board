@@ -2,6 +2,7 @@ package com.example.boardproject.config.auth;
 
 import com.example.boardproject.entity.Member;
 import com.example.boardproject.repository.MemberRepository;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -9,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
+
 public class PrincipalDetailsService implements UserDetailsService {
 
     @Autowired
@@ -18,6 +20,7 @@ public class PrincipalDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String userid) throws UsernameNotFoundException {
         Member member = memberRepository.findByuserid(userid);
+        Hibernate.initialize(member);
         if(member!=null){
             return new PrincipalDetails(member);
         }

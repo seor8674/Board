@@ -2,10 +2,13 @@ package com.example.boardproject.config.controller;
 
 import com.example.boardproject.config.auth.PrincipalDetails;
 import com.example.boardproject.entity.Member;
+import com.example.boardproject.entity.Post;
 import com.example.boardproject.repository.MemberRepository;
 import com.example.boardproject.repository.PostRepository;
 import com.example.boardproject.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -14,6 +17,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 @Controller
 public class IndexController {
@@ -36,7 +41,11 @@ public class IndexController {
         }catch (NullPointerException e){
             model.addAttribute("check",false);
         }
-        model.addAttribute("post",postRepository.findTop10By());
+        PageRequest pageRequest = PageRequest.of(0, 10);
+        Page<Post> all = postRepository.findAll(pageRequest);
+        List<Post> content = all.getContent();
+        model.addAttribute("post",content);
+        model.addAttribute("count",all.getTotalPages());
 
 
         return "index";
@@ -61,5 +70,21 @@ public class IndexController {
     @GetMapping("/member/enter")
     public String enter(){
         return "register";
+    }
+
+    @GetMapping("/admin")
+    public String admin(@AuthenticationPrincipal PrincipalDetails userDetails, Model model){
+        try{
+            model.addAttribute("name",userDetails.getMember().getUsername());
+            model.addAttribute("check",true);
+        }catch (NullPointerException e){
+            model.addAttribute("check",false);
+        }
+        PageRequest pageRequest = PageRequest.of(0, 10);
+        Page<Post> all = postRepository.findAll(pageRequest);
+        List<Post> content = all.getContent();
+        model.addAttribute("post",content);
+        model.addAttribute("count",all.getTotalPages());
+        return "admin";
     }
 }

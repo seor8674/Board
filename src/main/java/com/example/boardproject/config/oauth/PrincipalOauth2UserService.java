@@ -6,6 +6,7 @@ import com.example.boardproject.config.oauth.provider.GoogleUserinfo;
 import com.example.boardproject.config.oauth.provider.OAuth2Userinfo;
 import com.example.boardproject.entity.Member;
 import com.example.boardproject.repository.MemberRepository;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -15,6 +16,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 @Service
+
 public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
 
@@ -27,12 +29,12 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
     @Override//login 후처리 함수
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
-        System.out.println(userRequest.getClientRegistration());
-        System.out.println(userRequest.getAccessToken().getTokenValue());
+        //System.out.println(userRequest.getClientRegistration());
+        //System.out.println(userRequest.getAccessToken().getTokenValue());
         //loaduser 함수로 회원정보 받을수있음
 
         OAuth2User oAuth2User = super.loadUser(userRequest);
-        System.out.println(oAuth2User.getAttributes());
+        //System.out.println(oAuth2User.getAttributes());
 
         OAuth2Userinfo oAuth2Userinfo=null;
         if(userRequest.getClientRegistration().getRegistrationId().equals("google")){
@@ -53,9 +55,8 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         String Role = "ROLE_MEMBER";
 
         Member byuserid = memberRepository.findByuserid(userid);
-
+        Hibernate.initialize(byuserid);
         if (byuserid == null) {
-            byuserid = new Member(username, userid, password, email);
             byuserid.setProvider(provider);
             byuserid.setProviderid(providerid);
             memberRepository.save(byuserid);
