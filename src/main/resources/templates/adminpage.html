@@ -32,7 +32,7 @@
     <tbody>
     <tr th:each="posts : ${post}" th:with="page=${page}-1">
         <td th:text="${postsStat.index+1+10*page}"></td>
-        <td width="550"><a th:href="@{post/details(id=${posts.getId()})}" th:text="${posts.getTitle()}"></a></td>
+        <td width="550"><a th:href="@{/post/details(id=${posts.getId()})}" th:text="${posts.getTitle()}"></a></td>
         <td width="250" th:text="${posts.getMember().getUserid()}"></td>
         <td th:text="${posts.getLastmodifiedDate()}"></td>
         <td th:text="${posts.getHit()}"></td>
@@ -53,6 +53,10 @@
            </td>
         </tr>
     </table>
+    <form action="/admin/search" method="get">
+        검색: <input type="text" name="search">
+        <input type="submit" value="검색">
+    </form>
 </div>
 
 

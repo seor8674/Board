@@ -26,18 +26,17 @@
         <td >조회수</td>
         <td>수정</td>
         <td>삭제</td>
-
     </tr>
     </thead>
-    <tbody>
+    <tbody >
     <tr th:each="posts : ${post}">
         <td th:text="${postsStat.index+1}"></td>
-        <td width="550"><a th:href="@{post/details(id=${posts.getId()})}" th:text="${posts.getTitle()}"></a></td>
+        <td width="550"><a th:href="@{/post/details(id=${posts.getId()})}" th:text="${posts.getTitle()}"></a></td>
         <td width="250" th:text="${posts.getMember().getUserid()}"></td>
         <td th:text="${posts.getLastmodifiedDate()}"></td>
         <td th:text="${posts.getHit()}"></td>
-        <td><a th:href="@{admin/update(id=${posts.getId()})}" th:text="수정"></a> </td>
-        <td><a th:href="@{admin/delete(id=${posts.getId()})}" th:text="삭제"></a> </td>
+        <td><a th:href="@{/admin/update(id=${posts.getId()})}" th:text="수정"></a> </td>
+        <td><a th:href="@{/admin/delete(id=${posts.getId()})}" th:text="삭제"></a> </td>
     </tr>
     </tbody>
 </table>
@@ -48,9 +47,9 @@
 <div style="text-align: center">
     <table style="margin: auto; text-align: center">
         <tr th:with="count=${count}">
-            <td th:each="m : ${#numbers.sequence(1,count)}" >
-                <a th:style="${m==1 ? 'font-weight:bold ;':'font-weight:normal' }" th:href="@{/admin/board(page=${m})}" th:text="${m}"></a>
-            </td>
+           <td th:each="m : ${#numbers.sequence(1,count)}" >
+               <a th:style="${m==1 ? 'font-weight:bold ;':'font-weight:normal' }" th:href="@{/admin/search/board(page=${m},search=${search})}" th:text="${m}"></a>
+           </td>
         </tr>
     </table>
     <form action="/admin/search" method="get">
@@ -58,5 +57,7 @@
         <input type="submit" value="검색">
     </form>
 </div>
+
+
 </body>
 </html>

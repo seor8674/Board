@@ -44,7 +44,7 @@
     <table style="margin: auto; text-align: center">
         <tr th:with="count=${count}">
            <td th:each="m : ${#numbers.sequence(1,count)}" >
-               <a th:style="${m==1 ? 'font-weight:bold ;':'font-weight:normal' }" th:href="@{/board(page=${m})}" th:text="${m}"></a>
+               <a th:style="${m==1 ? 'font-weight:bold ;':'font-weight:normal' }" th:href="@{/search/board(page=${m},search=${search})}" th:text="${m}"></a>
            </td>
         </tr>
     </table>

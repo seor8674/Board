@@ -105,15 +105,34 @@ public class IndexController {
         }catch (NullPointerException e){
             model.addAttribute("check",false);
         }
-        List<Post> byTitleContaining = postRepository.findByTitleContaining(search);
-        model.addAttribute("post",byTitleContaining);
-        if(byTitleContaining.size()==0){
-            model.addAttribute("count",1);
-        }
-        else{
-            model.addAttribute("count",byTitleContaining.size());
-        }
+        PageRequest pageRequest = PageRequest.of(0, 10);
+        Page<Post> byTitleContaining = postRepository.findByTitleContaining(search, pageRequest);
+        List<Post> content = byTitleContaining.getContent();
+        model.addAttribute("search",search);
+        model.addAttribute("post",content);
+        model.addAttribute("count",byTitleContaining.getTotalPages());
+
         return "search";
+    }
+    @GetMapping("/search/board")
+    public String searchpage(@AuthenticationPrincipal PrincipalDetails userDetails,int page,Model model,String search){
+        try{
+            model.addAttribute("name",userDetails.getMember().getUsername());
+            model.addAttribute("check",true);
+        }catch (NullPointerException e){
+            model.addAttribute("check",false);
+        }
+        PageRequest pageRequest = PageRequest.of(page-1, 10);
+        Page<Post> all = postRepository.findByTitleContaining(search,pageRequest);
+        List<Post> content = all.getContent();
+        model.addAttribute("search",search);
+        model.addAttribute("page",page);
+        model.addAttribute("post",content);
+        model.addAttribute(
+                "count",all.getTotalPages());
+
+        return "searchpage";
+
     }
 
 }

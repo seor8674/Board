@@ -54,16 +54,19 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         String password = bCryptPasswordEncoder.encode("이환준");//의미없음
         String Role = "ROLE_MEMBER";
 
+        Member member;
         Member byuserid = memberRepository.findByuserid(userid);
-        Hibernate.initialize(byuserid);
         if (byuserid == null) {
-            byuserid.setProvider(provider);
-            byuserid.setProviderid(providerid);
-            memberRepository.save(byuserid);
+            member = new Member(username,userid,password,email);
+            member.setProvider(provider);
+            member.setProviderid(providerid);
+            memberRepository.save(member);
+
         } else {
+            member=byuserid;
 
         }
-        return new PrincipalDetails(byuserid,oAuth2User.getAttributes());
+        return new PrincipalDetails(member,oAuth2User.getAttributes());
 
     }
 
