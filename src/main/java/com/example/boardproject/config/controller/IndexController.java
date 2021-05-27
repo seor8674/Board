@@ -6,6 +6,7 @@ import com.example.boardproject.entity.Post;
 import com.example.boardproject.repository.MemberRepository;
 import com.example.boardproject.repository.PostRepository;
 import com.example.boardproject.service.MemberService;
+import org.dom4j.rule.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -46,7 +47,13 @@ public class IndexController {
         Page<Post> all = postRepository.findAll(pageRequest);
         List<Post> content = all.getContent();
         model.addAttribute("post",content);
-        model.addAttribute("count",all.getTotalPages());
+        if(all.getTotalPages()==0){
+            model.addAttribute("count",1);
+        }
+        else{
+            model.addAttribute("count",all.getTotalPages());
+        }
+
 
 
         return "index";
@@ -68,10 +75,7 @@ public class IndexController {
         memberService.join(member);
         return "redirect:/";
     }
-    @GetMapping("/member/enter")
-    public String enter(){
-        return "register";
-    }
+
 
 
 
@@ -93,4 +97,23 @@ public class IndexController {
         return "page";
 
     }
+    @GetMapping("/search")
+    public String search(@AuthenticationPrincipal PrincipalDetails userDetails,String search, Model model){
+        try{
+            model.addAttribute("name",userDetails.getMember().getUsername());
+            model.addAttribute("check",true);
+        }catch (NullPointerException e){
+            model.addAttribute("check",false);
+        }
+        List<Post> byTitleContaining = postRepository.findByTitleContaining(search);
+        model.addAttribute("post",byTitleContaining);
+        if(byTitleContaining.size()==0){
+            model.addAttribute("count",1);
+        }
+        else{
+            model.addAttribute("count",byTitleContaining.size());
+        }
+        return "search";
+    }
+
 }

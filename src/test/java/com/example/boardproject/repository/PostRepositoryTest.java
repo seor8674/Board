@@ -40,11 +40,8 @@ class PostRepositoryTest {
         postRepository.save(post6);
 
         //Post firstBy = postRepository.findFirstByOrderById();
-        List<Post> top3By = postRepository.findTop3By();
-        List<Post> top10By = postRepository.findTop10By();
-        org.assertj.core.api.Assertions.assertThat(top3By.get(0).getTitle()).isEqualTo("A");
-        System.out.println(top3By.size());
-        System.out.println(top10By.size());
+
+
     }
     @Test
     public void page(){
@@ -71,5 +68,28 @@ class PostRepositoryTest {
         System.out.println(all.getNumber());
         System.out.println(all.getTotalPages());
         System.out.println(all.hasNext());
+    }
+    @Test
+    public void like(){
+        Member member = new Member("MemberA","as","123","qwd");
+        memberRepository.save(member);
+        Post post1 = new Post("Adidas","contentA");
+        Post post2 = new Post("Beyond","contentB");
+        Post post3 = new Post("Channel","contentC");
+        Post post4 = new Post("Calheart","contentC");
+        Post post5 = new Post("Nike","contentC");
+        Post post6 = new Post("puma","contentC");
+
+        postRepository.save(post1);
+        postRepository.save(post2);
+        postRepository.save(post3);
+        postRepository.save(post4);
+        postRepository.save(post5);
+        postRepository.save(post6);
+        List<Post> a = postRepository.findByTitleContaining("a");
+        for (Post post : a) {
+            System.out.println(post.getTitle());
+        }
+
     }
 }

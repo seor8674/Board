@@ -8,13 +8,12 @@
 <div style="text-align: center">
     <a href="/" ><h1>My board</h1></a>
 </div>
-<div  style="text-align: right" th:if="${!check}">
+<div style="text-align: right" th:if="${!check}">
     <a href="/loginform">로그인</a>
 </div><br>
 <div style="text-align: right" th:if="${check}" th:text="${name}+'님 환영합니다!'"></div>
 <div style="text-align: right" th:if="${check}">
     <a href="/logout">로그아웃</a>
-    <a href="/member/mine">내가 쓴글</a>
 </div>
 <table border="1" style="width: 60%; height: 100px; margin: auto; text-align: center">
     <thead>
@@ -24,32 +23,31 @@
         <td width="250">글쓴이</td>
         <td>작성일자</td>
         <td >조회수</td>
+        <td>수정</td>
+        <td>삭제</td>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="posts : ${post}" th:with="page=${page}-1">
-        <td th:text="${postsStat.index+1+10*page}"></td>
-        <td width="550"><a th:href="@{post/details(id=${posts.getId()})}" th:text="${posts.getTitle()}"></a></td>
+    <tr th:each="posts : ${post}">
+        <td th:text="${postsStat.index+1}"></td>
+        <td width="550" th:text="${posts.getTitle()}"></td>
         <td width="250" th:text="${posts.getMember().getUserid()}"></td>
         <td th:text="${posts.getLastmodifiedDate()}"></td>
         <td th:text="${posts.getHit()}"></td>
+        <td><a th:href="@{/member/update(id=${posts.getId()})}" th:text="수정"></a> </td>
+        <td><a th:href="@{/member/delete(id=${posts.getId()})}" th:text="삭제"></a> </td>
     </tr>
     </tbody>
 </table>
-<div style="text-align: right">
-    <a href="/member/enter">글쓰기</a>
-    <a href="/admin">관리자 페이지</a>
-</div>
+
 <div style="text-align: center">
-    <table style="margin: auto; text-align: center" th:with="page=${page}">
-        <tr th:with="count=${count}">
-           <td th:each="m : ${#numbers.sequence(1,count)}" >
-              <a th:style="${m==page ? 'font-weight:bold ;':'font-weight:normal' }" th:href="@{/board(page=${m})}" th:text="${m}"></a>
-           </td>
+    <table style="margin: auto; text-align: center">
+        <tr th:with="count=${size}">
+            <td th:each="m : ${#numbers.sequence(1,count)}" >
+                <a th:style="${m==1 ? 'font-weight:bold ;':'font-weight:normal' }" th:href="@{/admin/board(page=${m})}" th:text="${m}"></a>
+            </td>
         </tr>
     </table>
 </div>
-
-
 </body>
 </html>
