@@ -8,7 +8,7 @@
 <div style="text-align: center">
     <a href="/" ><h1>My board</h1></a>
 </div>
-<div style="text-align: right" th:if="${!check}">
+<div  style="text-align: right" th:if="${!check}">
     <a href="/loginform">로그인</a>
 </div><br>
 <div style="text-align: right" th:if="${check}" th:text="${name}+'님 환영합니다!'"></div>
@@ -25,9 +25,9 @@
         <td >조회수</td>
     </tr>
     </thead>
-    <tbody >
-    <tr th:each="posts : ${post}">
-        <td th:text="${postsStat.index+1}"></td>
+    <tbody>
+    <tr th:each="posts : ${post}" th:with="page=${page}-1">
+        <td th:text="${postsStat.index+1+10*page}"></td>
         <td width="550"><a th:href="@{post/details(id=${posts.getId()})}" th:text="${posts.getTitle()}"></a></td>
         <td width="250" th:text="${posts.getMember().getUserid()}"></td>
         <td th:text="${posts.getLastmodifiedDate()}"></td>
@@ -40,10 +40,10 @@
     <a href="/admin">관리자 페이지</a>
 </div>
 <div style="text-align: center">
-    <table style="margin: auto; text-align: center">
+    <table style="margin: auto; text-align: center" th:with="page=${page}">
         <tr th:with="count=${count}">
            <td th:each="m : ${#numbers.sequence(1,count)}" >
-               <a th:style="${m==1 ? 'font-weight:bold ;':'font-weight:normal' }" th:href="@{/board(page=${m})}" th:text="${m}"></a>
+              <a th:style="${m==page ? 'font-weight:bold ;':'font-weight:normal' }" th:href="@{/board(page=${m})}" th:text="${m}"></a>
            </td>
         </tr>
     </table>

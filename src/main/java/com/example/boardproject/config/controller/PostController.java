@@ -7,6 +7,8 @@ import com.example.boardproject.repository.MemberRepository;
 import com.example.boardproject.repository.PostRepository;
 import com.example.boardproject.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;

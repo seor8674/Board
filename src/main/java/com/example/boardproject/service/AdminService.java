@@ -20,6 +20,10 @@ public class AdminService {
         post.setTitle(title);
     }
 
+    public void delete(Long id){
+        postRepository.deleteById(id);
+    }
+
 
 
 }

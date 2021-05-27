@@ -6,7 +6,7 @@
 </head>
 <body>
 <div style="text-align: center">
-    <h1>My Board</h1>
+    <a href="/" ><h1>My board</h1></a>
 </div>
 <div style="text-align: right" th:if="${!check}">
     <a href="/loginform">로그인</a>
@@ -29,7 +29,7 @@
     </thead>
     <tbody>
     <tr th:each="posts : ${post}">
-        <td th:text="${posts.getId()}"></td>
+        <td th:text="${postsStat.index+1}"></td>
         <td width="550"><a th:href="@{post/details(id=${posts.getId()})}" th:text="${posts.getTitle()}"></a></td>
         <td width="250" th:text="${posts.getMember().getUserid()}"></td>
         <td th:text="${posts.getLastmodifiedDate()}"></td>
@@ -43,6 +43,14 @@
     <a href="/member/enter">글쓰기</a>
     <a href="/admin">관리자 페이지</a>
 </div>
-
+<div style="text-align: center">
+    <table style="margin: auto; text-align: center">
+        <tr th:with="count=${count}">
+            <td th:each="m : ${#numbers.sequence(1,count)}" >
+                <a th:style="${m==1 ? 'font-weight:bold ;':'font-weight:normal' }" th:href="@{/admin/board(page=${m})}" th:text="${m}"></a>
+            </td>
+        </tr>
+    </table>
+</div>
 </body>
 </html>

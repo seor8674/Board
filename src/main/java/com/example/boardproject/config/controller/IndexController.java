@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -72,19 +73,24 @@ public class IndexController {
         return "register";
     }
 
-    @GetMapping("/admin")
-    public String admin(@AuthenticationPrincipal PrincipalDetails userDetails, Model model){
+
+
+    @GetMapping("/board")
+    public String page(@AuthenticationPrincipal PrincipalDetails userDetails,@RequestParam int page,Model model){
         try{
             model.addAttribute("name",userDetails.getMember().getUsername());
             model.addAttribute("check",true);
         }catch (NullPointerException e){
             model.addAttribute("check",false);
         }
-        PageRequest pageRequest = PageRequest.of(0, 10);
+        PageRequest pageRequest = PageRequest.of(page-1, 10);
         Page<Post> all = postRepository.findAll(pageRequest);
         List<Post> content = all.getContent();
+        model.addAttribute("page",page);
         model.addAttribute("post",content);
         model.addAttribute("count",all.getTotalPages());
-        return "admin";
+
+        return "page";
+
     }
 }
