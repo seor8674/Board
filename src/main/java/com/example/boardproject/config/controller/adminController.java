@@ -50,12 +50,12 @@ public class adminController {
     @PostMapping("/admin/update")
     public String update(@RequestParam Long id,@RequestParam String title,@RequestParam String content){
         adminService.update(id,title,content);
-        return "redirect:/";
+        return "redirect:/admin";
     }
     @GetMapping("/admin/delete")
     public String delete(@RequestParam Long id, Model model){
         adminService.delete(id);
-        return "redirect:/";
+        return "redirect:/admin";
     }
 
     @GetMapping("/admin/board")
